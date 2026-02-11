@@ -1,4 +1,19 @@
+import { getWeather } from "../api/weather.ts";
+import { useState } from "react";
+
 export function Header() {
+  const [city, setCity] = useState("");
+
+  const handleSearch = async () => {
+    if(!city.trim()) return;
+
+    try {
+      const data = await getWeather(city)
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <div className="flex flex-col items-center w-full">
       <h1 className="text-4xl font-extrabold bg-gradient-to-r from-orange-400 via-red-500 to-purple-600 bg-clip-text text-transparent pb-2">
@@ -8,8 +23,12 @@ export function Header() {
         <input
           className="flex-1 px-3 py-2 focus:outline-none"
           placeholder="Enter City..."
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
         />
-        <button className="px-6 py-2 bg-blue-500 text-white font-medium hover:bg-blue-700 transition-colors">
+        <button className="px-6 py-2 bg-blue-500 text-white font-medium hover:bg-blue-700 transition-colors"
+          onClick={handleSearch}>
           Search
         </button>
       </div>
