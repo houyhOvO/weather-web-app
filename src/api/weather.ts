@@ -13,7 +13,8 @@ request.interceptors.request.use(
     Promise.reject(error);
 })
 
-request.interceptors.response.use((response) =>{
+request.interceptors.response.use(
+  (response) =>{
   return response.data;
 }, (error) => {console.log(error)})
 
@@ -22,7 +23,7 @@ export const getWeather = (city: string) => {
     method: "GET",
     url: `${city}`,
     params: {
-      unitGroup: 'metric'
+      unitGroup: 'metric' // use metric unit
     }
   })
 }
