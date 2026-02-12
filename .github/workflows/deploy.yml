@@ -1,8 +1,7 @@
-name: Weather Web App
+name: Manual Deploy to GitHub Pages
 
 on:
-  push:
-    branches: "main"
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -26,6 +25,8 @@ jobs:
         run: |
           npm install
           npm run build
+        env:
+          VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
 
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
