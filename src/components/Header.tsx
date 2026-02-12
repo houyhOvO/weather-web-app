@@ -1,17 +1,23 @@
 import { getWeather } from "../api/weather.ts";
 import { useState } from "react";
 
-export function Header() {
+
+interface HeaderProps {
+  onSearchSuccess: (data: any) => void;
+}
+
+export function Header({ onSearchSuccess }: HeaderProps) {
   const [city, setCity] = useState("");
 
   const handleSearch = async () => {
     if(!city.trim()) return;
 
     try {
-      const data = await getWeather(city)
+      const data = await getWeather(city);
+      onSearchSuccess(data);
       console.log(data);
     } catch (error) {
-      console.log(error);
+      alert("Could not find weather of the city :(");
     }
   }
   return (
