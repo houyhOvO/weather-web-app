@@ -8,6 +8,7 @@ import {
   Wind,
   CircleHelp,
 } from 'lucide-react'
+import type { CurrentWeather } from '../types/weatherTypes'
 
 const iconMap: Record<string, React.ReactNode> = {
   'clear-day': <Sun className="text-orange-400 w-16 h-16" />,
@@ -22,22 +23,13 @@ const iconMap: Record<string, React.ReactNode> = {
   'partly-cloudy-night': <Cloud className="text-slate-500 w-16 h-16" />,
 }
 interface SummaryCardProps {
-  data: {
-    address: string
-    currentConditions: {
-      temp: number
-      conditions: string
-      humidity: number
-      windspeed: number
-      icon: string
-    }
-  }
+  data: CurrentWeather | null
 }
 
 export function SummaryCard({ data }: SummaryCardProps) {
   if (!data) return null
-  const current = data.currentConditions
-  const WeatherIcon = iconMap[current.icon] || (
+  // const current = data.currentConditions
+  const WeatherIcon = iconMap[data.icon] || (
     <CircleHelp className="text-slate-300 w-16 h-16" />
   )
 
@@ -49,7 +41,7 @@ export function SummaryCard({ data }: SummaryCardProps) {
         </h2>
         <div className="flex items-center justify-center gap-4 my-2">
           <div className="text-7xl font-bold text-slate-800">
-            {current.temp}°C
+            {data.temp}°C
           </div>
           <div className="flex items-center justify-center animate-bounce-slow">
             {WeatherIcon}
@@ -57,18 +49,18 @@ export function SummaryCard({ data }: SummaryCardProps) {
         </div>
 
         <p className="text-xl text-slate-600 capitalize">
-          {current.conditions}
+          {data.conditions}
         </p>
       </div>
 
       <div className="mt-8 pt-8 border-t border-slate-100 flex justify-around text-center">
         <div>
           <p className="text-xs text-slate-400 uppercase">Humidity</p>
-          <p className="font-bold">{current.humidity}%</p>
+          <p className="font-bold">{data.humidity}%</p>
         </div>
         <div>
           <p className="text-xs text-slate-400 uppercase">Wind</p>
-          <p className="font-bold">{current.windspeed} km/h</p>
+          <p className="font-bold">{data.windspeed} km/h</p>
         </div>
       </div>
     </div>

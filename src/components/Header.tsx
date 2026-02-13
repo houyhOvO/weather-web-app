@@ -1,8 +1,9 @@
 import { getWeather } from '../api/weather.ts'
 import { useState } from 'react'
+import type { WeatherData } from '../types/weatherTypes.ts'
 
 interface HeaderProps {
-  onSearchSuccess: (data: any) => void
+  onSearchSuccess: (data: WeatherData) => void
 }
 
 export function Header({ onSearchSuccess }: HeaderProps) {

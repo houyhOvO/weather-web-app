@@ -1,4 +1,5 @@
 import axios from 'axios'
+import type { WeatherData, DaysWeather } from '../types/weatherTypes'
 
 const request = axios.create({
   baseURL:
@@ -12,7 +13,7 @@ request.interceptors.request.use(
     return config
   },
   (error) => {
-    Promise.reject(error)
+    return Promise.reject(error)
   },
 )
 
@@ -25,12 +26,29 @@ request.interceptors.response.use(
   },
 )
 
-export const getWeather = (city: string) => {
-  return request({
+export async function getWeather (city: string): Promise<WeatherData> {
+  const res: any = await request({
     method: 'GET',
     url: `${city}`,
     params: {
       unitGroup: 'metric', // use metric unit
     },
   })
+
+  return {
+    currentConditions: {
+      address: res.resolvedAddress,
+      temp: res.currentConditions.temp,
+      conditions: res.currentConditions.conditions,
+      humidity: res.currentConditions.humidity,
+      windspeed: res.currentConditions.windspeed,
+      icon: res.currentConditions.icon,
+    },
+    days: res.days.map((day: DaysWeather) => ({
+      datatime: day.datetime,
+      temp: day.temp,
+      conditions: day.conditions,
+      icon: day.icon,
+    })),
+  }
 }
