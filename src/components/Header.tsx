@@ -1,23 +1,23 @@
-import { getWeather } from "../api/weather.ts";
-import { useState } from "react";
-
+import { getWeather } from '../api/weather.ts'
+import { useState } from 'react'
 
 interface HeaderProps {
-  onSearchSuccess: (data: any) => void;
+  onSearchSuccess: (data: any) => void
 }
 
 export function Header({ onSearchSuccess }: HeaderProps) {
-  const [city, setCity] = useState("");
+  const [city, setCity] = useState('')
 
   const handleSearch = async () => {
-    if(!city.trim()) return;
+    if (!city.trim()) return
 
     try {
-      const data = await getWeather(city);
-      onSearchSuccess(data);
-      console.log(data);
-    } catch (error) {
-      alert("Could not find weather of the city :(");
+      const data = await getWeather(city)
+      onSearchSuccess(data)
+      console.log(data)
+    } catch (error: unknown) {
+      console.error(error)
+      alert('Could not find weather of the city :(')
     }
   }
   return (
@@ -31,10 +31,12 @@ export function Header({ onSearchSuccess }: HeaderProps) {
           placeholder="Enter City..."
           value={city}
           onChange={(e) => setCity(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+          onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
         />
-        <button className="px-6 py-2 bg-blue-500 text-white font-medium hover:bg-blue-700 transition-colors"
-          onClick={handleSearch}>
+        <button
+          className="px-6 py-2 bg-blue-500 text-white font-medium hover:bg-blue-700 transition-colors"
+          onClick={handleSearch}
+        >
           Search
         </button>
       </div>

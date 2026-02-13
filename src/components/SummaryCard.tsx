@@ -6,24 +6,24 @@ import {
   Snowflake,
   CloudFog,
   Wind,
-  CircleHelp
-} from "lucide-react"
+  CircleHelp,
+} from 'lucide-react'
 
 const iconMap: Record<string, React.ReactNode> = {
-  "clear-day": <Sun className="text-orange-400 w-16 h-16" />,
-  "clear-night": <Moon className="text-slate-400 w-16 h-16" />,
-  "rain": <CloudRain className="text-blue-400 w-16 h-16" />,
-  "snow": <Snowflake className="text-blue-200 w-16 h-16" />,
-  "sleet": <CloudRain className="text-cyan-300 w-16 h-16" />,
-  "wind": <Wind className="text-slate-400 w-16 h-16" />,
-  "fog": <CloudFog className="text-slate-300 w-16 h-16" />,
-  "cloudy": <Cloud className="text-slate-400 w-16 h-16" />,
-  "partly-cloudy-day": <Cloud className="text-orange-300 w-16 h-16" />,
-  "partly-cloudy-night": <Cloud className="text-slate-500 w-16 h-16" />,
-};
+  'clear-day': <Sun className="text-orange-400 w-16 h-16" />,
+  'clear-night': <Moon className="text-slate-400 w-16 h-16" />,
+  rain: <CloudRain className="text-blue-400 w-16 h-16" />,
+  snow: <Snowflake className="text-blue-200 w-16 h-16" />,
+  sleet: <CloudRain className="text-cyan-300 w-16 h-16" />,
+  wind: <Wind className="text-slate-400 w-16 h-16" />,
+  fog: <CloudFog className="text-slate-300 w-16 h-16" />,
+  cloudy: <Cloud className="text-slate-400 w-16 h-16" />,
+  'partly-cloudy-day': <Cloud className="text-orange-300 w-16 h-16" />,
+  'partly-cloudy-night': <Cloud className="text-slate-500 w-16 h-16" />,
+}
 interface SummaryCardProps {
   data: {
-    address: string,
+    address: string
     currentConditions: {
       temp: number
       conditions: string
@@ -34,10 +34,12 @@ interface SummaryCardProps {
   }
 }
 
-export function SummaryCard({ data } : SummaryCardProps){
-  if (!data) return null;
-  const current = data.currentConditions;
-  const WeatherIcon = iconMap[current.icon] || <CircleHelp className="text-slate-300 w-16 h-16" />;
+export function SummaryCard({ data }: SummaryCardProps) {
+  if (!data) return null
+  const current = data.currentConditions
+  const WeatherIcon = iconMap[current.icon] || (
+    <CircleHelp className="text-slate-300 w-16 h-16" />
+  )
 
   return (
     <div className="w-full max-w-md p-8 rounded-3xl bg-white shadow-xl border border-slate-200">
@@ -54,12 +56,9 @@ export function SummaryCard({ data } : SummaryCardProps){
           </div>
         </div>
 
-
-
-          <p className="text-xl text-slate-600 capitalize">
-            {current.conditions}
-          </p>
-
+        <p className="text-xl text-slate-600 capitalize">
+          {current.conditions}
+        </p>
       </div>
 
       <div className="mt-8 pt-8 border-t border-slate-100 flex justify-around text-center">
