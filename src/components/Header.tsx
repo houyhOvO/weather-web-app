@@ -15,7 +15,7 @@ export function Header({ onSearchSuccess }: HeaderProps) {
     try {
       const data = await getWeather(city);
       onSearchSuccess(data);
-      console.log(data);
+      // console.log(data);
     } catch (error: unknown) {
       console.error(error);
       alert("Could not find weather of the city :(");

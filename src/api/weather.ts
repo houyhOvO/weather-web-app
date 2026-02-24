@@ -45,7 +45,7 @@ export async function getWeather(city: string): Promise<WeatherData> {
       icon: res.currentConditions.icon,
     },
     days: res.days.map((day: DaysWeather) => ({
-      datatime: day.datetime,
+      datetime: day.datetime,
       temp: day.temp,
       conditions: day.conditions,
       icon: day.icon,
