@@ -1,39 +1,39 @@
-import axios from 'axios'
-import type { WeatherData, DaysWeather } from '../types/weatherTypes'
+import axios from "axios";
+import type { WeatherData, DaysWeather } from "../types/weatherTypes";
 
 const request = axios.create({
   baseURL:
-    'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/',
-})
+    "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/",
+});
 
 request.interceptors.request.use(
   (config) => {
-    const API_KEY = import.meta.env.VITE_API_KEY
-    config.params = { ...config.params, key: API_KEY }
-    return config
+    const API_KEY = import.meta.env.VITE_API_KEY;
+    config.params = { ...config.params, key: API_KEY };
+    return config;
   },
   (error) => {
-    return Promise.reject(error)
+    return Promise.reject(error);
   },
-)
+);
 
 request.interceptors.response.use(
   (response) => {
-    return response.data
+    return response.data;
   },
   (error) => {
-    console.log(error)
+    console.log(error);
   },
-)
+);
 
-export async function getWeather (city: string): Promise<WeatherData> {
+export async function getWeather(city: string): Promise<WeatherData> {
   const res: any = await request({
-    method: 'GET',
+    method: "GET",
     url: `${city}`,
     params: {
-      unitGroup: 'metric', // use metric unit
+      unitGroup: "metric", // use metric unit
     },
-  })
+  });
 
   return {
     currentConditions: {
@@ -50,5 +50,5 @@ export async function getWeather (city: string): Promise<WeatherData> {
       conditions: day.conditions,
       icon: day.icon,
     })),
-  }
+  };
 }
