@@ -9,7 +9,8 @@ export interface CurrentWeather {
 
 export interface DaysWeather {
   datetime: string;
-  temp: number;
+  tempmin: number;
+  tempmax: number;
   conditions: string;
   icon: string;
 }

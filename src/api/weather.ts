@@ -46,7 +46,8 @@ export async function getWeather(city: string): Promise<WeatherData> {
     },
     days: res.days.map((day: DaysWeather) => ({
       datetime: day.datetime,
-      temp: day.temp,
+      tempmin: day.tempmin,
+      tempmax: day.tempmax,
       conditions: day.conditions,
       icon: day.icon,
     })),

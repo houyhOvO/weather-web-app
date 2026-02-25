@@ -67,7 +67,7 @@ export function DaysWeatherCard({ data }: DaysWeatherProps) {
 
       <div className="text-center">
         <div className="text-2xl font-bold text-slate-800">
-          {Math.round(data.temp)}°
+          {Math.round(data.tempmin)}°-{Math.round(data.tempmax)}°
         </div>
         <p className="text-[10px] text-slate-500 font-medium capitalize mt-1 line-clamp-1">
           {data.conditions}
