@@ -3,42 +3,31 @@ import {
   Sun,
   Cloud,
   CloudRain,
-  CloudSnow,
-  CloudLightning,
-  Wind,
+  Snowflake,
   CloudFog,
-  Moon,
+  Wind,
   CloudSun,
   CloudMoon,
-  type LucideIcon,
+  Moon,
+  CloudLightning,
+  CircleHelp,
 } from "lucide-react";
 
-// 定义图标映射表
-const iconMap: Record<string, LucideIcon> = {
-  "clear-day": Sun,
-  "clear-night": Moon,
-  rain: CloudRain,
-  snow: CloudSnow,
-  sleet: CloudRain, // 冰雹/雨夹雪
-  wind: Wind,
-  fog: CloudFog,
-  cloudy: Cloud,
-  "partly-cloudy-day": CloudSun,
-  "partly-cloudy-night": CloudMoon,
-  thunderstorm: CloudLightning,
-  "showers-day": CloudRain,
-  "showers-night": CloudRain,
-};
-
-const WeatherIcon = ({
-  name,
-  className,
-}: {
-  name: string;
-  className?: string;
-}) => {
-  const IconComponent = iconMap[name] || Cloud;
-  return <IconComponent className={className} />;
+// 统一颜色映射表，与 SummaryCard 保持一致
+const iconConfig: Record<string, { component: any; color: string }> = {
+  "clear-day": { component: Sun, color: "text-orange-400" },
+  "clear-night": { component: Moon, color: "text-slate-400" },
+  rain: { component: CloudRain, color: "text-blue-400" },
+  snow: { component: Snowflake, color: "text-blue-200" },
+  sleet: { component: CloudRain, color: "text-cyan-300" },
+  wind: { component: Wind, color: "text-slate-400" },
+  fog: { component: CloudFog, color: "text-slate-300" },
+  cloudy: { component: Cloud, color: "text-slate-400" },
+  "partly-cloudy-day": { component: CloudSun, color: "text-orange-300" },
+  "partly-cloudy-night": { component: CloudMoon, color: "text-slate-500" },
+  thunderstorm: { component: CloudLightning, color: "text-purple-400" },
+  "showers-day": { component: CloudRain, color: "text-blue-400" },
+  "showers-night": { component: CloudRain, color: "text-blue-400" },
 };
 
 interface DaysWeatherProps {
@@ -47,10 +36,13 @@ interface DaysWeatherProps {
 
 export function DaysWeatherCard({ data }: DaysWeatherProps) {
   if (!data) return null;
-  console.log("Current Data:", data);
 
-  const dateObj = new Date(data.datetime);
-  console.log("Parsed Date Object:", dateObj); // 如果这里是 Invalid Date，说明字符串格式不对
+  const config = iconConfig[data.icon] || {
+    component: CircleHelp,
+    color: "text-slate-300",
+  };
+  const IconComponent = config.component;
+
   const dayName = new Date(data.datetime).toLocaleDateString("en-US", {
     weekday: "short",
   });
@@ -61,32 +53,25 @@ export function DaysWeatherCard({ data }: DaysWeatherProps) {
   });
 
   return (
-    <div className="group flex flex-col items-center p-5 min-w-[110px] bg-white/5 hover:bg-white/10 backdrop-blur-sm border border-white/10 rounded-3xl transition-all duration-300">
-      {/* 日期部分 */}
-      <div className="text-center mb-4">
-        <p className="text-xs text-slate-400 font-medium uppercase tracking-wider">
+    <div className="flex flex-col items-center p-6 min-w-[130px] bg-white rounded-3xl shadow-lg border border-slate-100 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+      <div className="text-center mb-3">
+        <p className="text-[10px] uppercase tracking-widest text-slate-400 font-bold">
           {dayName}
         </p>
-        <p className="text-[10px] text-slate-500">{dateNum}</p>
+        <p className="text-[10px] text-slate-300 font-medium">{dateNum}</p>
       </div>
 
-      {/* Lucide 图标 */}
-      <div className="relative mb-4">
-        <div className="absolute inset-0 bg-blue-400/20 blur-xl rounded-full group-hover:bg-blue-400/30 transition-colors" />
-        <WeatherIcon
-          name={data.icon}
-          className="w-10 h-10 text-white relative z-10 drop-shadow-md"
-        />
+      <div className="my-4">
+        <IconComponent className={`${config.color} w-10 h-10`} />
       </div>
 
-      {/* 温度区间 */}
-      <div className="flex flex-col items-center">
-        <span className="text-lg font-bold text-white tracking-tight">
+      <div className="text-center">
+        <div className="text-2xl font-bold text-slate-800">
           {Math.round(data.temp)}°
-        </span>
-        <span className="text-[10px] text-slate-400 mt-1 font-medium truncate max-w-[80px]">
+        </div>
+        <p className="text-[10px] text-slate-500 font-medium capitalize mt-1 line-clamp-1">
           {data.conditions}
-        </span>
+        </p>
       </div>
     </div>
   );
