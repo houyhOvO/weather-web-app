@@ -1,5 +1,16 @@
 @import "tailwindcss";
 
+@tailwind utilities;
+
+@layer base {
+    html,
+    body {
+        @apply bg-slate-50;
+        margin: 0;
+        padding: 0;
+    }
+}
+
 @theme {
     --animate-bounce-slow: bounce-slow 3s ease-in-out infinite;
     @keyframes bounce-slow {
