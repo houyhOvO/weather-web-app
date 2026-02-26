@@ -1,6 +1,23 @@
 import axios from "axios";
 import type { WeatherData, DaysWeather } from "../types/weatherTypes";
 
+interface VisualCrossingResponse {
+  resolvedAddress: string;
+  currentConditions: {
+    temp: number;
+    conditions: string;
+    humidity: number;
+    windspeed: number;
+    icon: string;
+  };
+  days: Array<{
+    datetime: string;
+    tempmin: number;
+    tempmax: number;
+    conditions: string;
+    icon: string;
+  }>;
+}
 const request = axios.create({
   baseURL:
     "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/",
@@ -27,7 +44,7 @@ request.interceptors.response.use(
 );
 
 export async function getWeather(city: string): Promise<WeatherData> {
-  const res: any = await request({
+  const res = await request<VisualCrossingResponse>({
     method: "GET",
     url: `${city}`,
     params: {
@@ -35,16 +52,18 @@ export async function getWeather(city: string): Promise<WeatherData> {
     },
   });
 
+  const data = res as unknown as VisualCrossingResponse;
+
   return {
     currentConditions: {
-      address: res.resolvedAddress,
-      temp: res.currentConditions.temp,
-      conditions: res.currentConditions.conditions,
-      humidity: res.currentConditions.humidity,
-      windspeed: res.currentConditions.windspeed,
-      icon: res.currentConditions.icon,
+      address: data.resolvedAddress,
+      temp: data.currentConditions.temp,
+      conditions: data.currentConditions.conditions,
+      humidity: data.currentConditions.humidity,
+      windspeed: data.currentConditions.windspeed,
+      icon: data.currentConditions.icon,
     },
-    days: res.days.map((day: DaysWeather) => ({
+    days: data.days.map((day: DaysWeather) => ({
       datetime: day.datetime,
       tempmin: day.tempmin,
       tempmax: day.tempmax,
